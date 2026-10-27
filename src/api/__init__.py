@@ -1,0 +1,1 @@
+"""Subpacote da API RESTful."""

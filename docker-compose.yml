@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  aeromotion-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aeromotion_inference_edge
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./dados_sensores_aeromotion.csv:/app/dados_sensores_aeromotion.csv:ro
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/health\")' || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
